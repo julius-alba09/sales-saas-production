@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: sales-saas-postgres
+    environment:
+      POSTGRES_DB: sales_saas_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/seeds.sql:/docker-entrypoint-initdb.d/02-seeds.sql
+    networks:
+      - sales-saas-network
+
+  # Redis for caching and sessions
+  redis:
+    image: redis:7-alpine
+    container_name: sales-saas-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - sales-saas-network
+
+  # Backend API Server
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: sales-saas-backend
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:password123@postgres:5432/sales_saas_dev
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=your-jwt-secret-key-here
+      - PORT=3001
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - sales-saas-network
+    command: npm run dev
+
+  # Frontend Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: sales-saas-frontend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
+      - NODE_ENV=development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - backend
+    networks:
+      - sales-saas-network
+    command: npm run dev
+
+  # pgAdmin for database management (optional)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: sales-saas-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@sales-saas.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - sales-saas-network
+
+networks:
+  sales-saas-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
