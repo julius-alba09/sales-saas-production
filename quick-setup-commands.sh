@@ -1,0 +1,21 @@
+#!/bin/bash
+# Quick setup commands after manual Supabase login
+
+echo "Run these commands after 'supabase login':"
+echo ""
+echo "# Create and link Supabase project"
+echo "supabase projects create sales-saas-production"
+echo "read -p 'Enter your project-ref from above: ' PROJECT_REF"
+echo "supabase link --project-ref \$PROJECT_REF"
+echo ""
+echo "# Deploy database and generate types"
+echo "supabase db push"
+echo "supabase gen types typescript > frontend/src/types/supabase.ts"
+echo ""
+echo "# Get API keys"
+echo "supabase projects api-keys --project-ref \$PROJECT_REF"
+echo ""
+echo "# Deploy to Vercel"
+echo "cd frontend"
+echo "vercel"
+echo "# Follow prompts, then set environment variables with the keys from above"
