@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Your Email - Sales SaaS</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            background: white;
+            padding: 30px;
+            border: 1px solid #e1e8ed;
+            border-radius: 0 0 8px 8px;
+        }
+        .button {
+            display: inline-block;
+            background: #1d4ed8;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 30px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Sales SaaS</div>
+        <h1>Confirm Your Email Address</h1>
+    </div>
+    
+    <div class="content">
+        <p>Hello!</p>
+        
+        <p>Thank you for signing up for Sales SaaS. To complete your account setup, please confirm your email address by clicking the button below:</p>
+        
+        <p style="text-align: center;">
+            <a href="{{ .ConfirmationURL }}" class="button">Confirm Email Address</a>
+        </p>
+        
+        <p>Once your email is confirmed, you'll be able to:</p>
+        <ul>
+            <li>Access your personalized dashboard</li>
+            <li>Start tracking your sales metrics</li>
+            <li>Submit daily reports</li>
+            <li>Set and monitor your goals</li>
+        </ul>
+        
+        <p>This confirmation link will expire in 24 hours for security reasons.</p>
+        
+        <p>If you didn't create an account with us, you can safely ignore this email.</p>
+        
+        <p>Best regards,<br>The Sales SaaS Team</p>
+        
+        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
+        
+        <p style="font-size: 14px; color: #6b7280;">
+            If you're having trouble with the button above, copy and paste the URL below into your web browser:
+        </p>
+        <p style="font-size: 14px; color: #6b7280; word-break: break-all;">
+            {{ .ConfirmationURL }}
+        </p>
+    </div>
+    
+    <div class="footer">
+        <p>&copy; 2025 Sales SaaS. All rights reserved.</p>
+    </div>
+</body>
+</html>

@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sales SaaS - Multi-Dashboard Sales Management",
-  description: "Comprehensive sales management platform for agencies, sales reps, and appointment setters",
+  title: "Outscaled - Elite Sales Training Platform",
+  description: "Transform your sales team with proven methodologies and comprehensive training programs. Access performance tracking tools and analytics to measure progress and optimize results.",
 };
 
 export default function RootLayout({
@@ -24,9 +24,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800`}
       >
         <Providers>
           {children}

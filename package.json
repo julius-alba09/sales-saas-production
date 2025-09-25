@@ -1,0 +1,52 @@
+{
+  "name": "sales-saas-app",
+  "version": "2.0.0",
+  "description": "Production-ready Sales SaaS application with multi-tenant architecture",
+  "private": true,
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm run start",
+    "lint": "cd frontend && npm run lint",
+    "type-check": "cd frontend && npm run type-check",
+    "db:migrate": "supabase migration up",
+    "db:reset": "supabase db reset",
+    "db:types": "supabase gen types typescript --local > frontend/src/types/supabase.ts",
+    "setup:local": "supabase start && npm run db:migrate && npm run db:types",
+    "setup:production": "supabase link && supabase db push && npm run db:types",
+    "deploy:vercel": "cd frontend && vercel --prod",
+    "postinstall": "cd frontend && npm install"
+  },
+  "keywords": [
+    "sales",
+    "saas",
+    "crm",
+    "nextjs",
+    "supabase",
+    "typescript",
+    "multi-tenant"
+  ],
+  "author": {
+    "name": "Sales SaaS Team",
+    "email": "support@sales-saas-app.com"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/sales-saas-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/sales-saas-app/issues"
+  },
+  "homepage": "https://github.com/yourusername/sales-saas-app#readme",
+  "devDependencies": {
+    "@supabase/cli": "^2.45.5"
+  },
+  "workspaces": [
+    "frontend"
+  ]
+}

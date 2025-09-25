@@ -120,3 +120,12 @@ docker-compose.override.yml
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# Supabase local development
+.branches
+.temp
+supabase/.temp
+supabase/.branches
+
+# Vercel
+.vercel

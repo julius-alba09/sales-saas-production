@@ -1,17 +1,68 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { 
   PhoneIcon,
   ChatBubbleLeftIcon,
   CalendarIcon,
-  TargetIcon,
+  RectangleStackIcon as TargetIcon,
   ChartBarIcon,
   ClockIcon
 } from '@heroicons/react/24/outline'
+import { Navigation } from '@/components/navigation/Navigation'
+import { Breadcrumb } from '@/components/navigation/Breadcrumb'
+import { DashboardSwitcher } from '@/components/dashboard/DashboardSwitcher'
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
+import { useAuth } from '@/lib/auth-context'
+
+interface TeamMember {
+  id: string
+  name: string
+  firstName: string
+  lastName: string
+  email: string
+  role: 'sales_rep' | 'setter' | 'manager'
+  avatar?: string
+}
 
 export default function SetterDashboard() {
+  const searchParams = useSearchParams()
+  const { profile } = useAuth()
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0])
+  const [viewingMember, setViewingMember] = useState<TeamMember | null>(null)
+
+  // Check if manager is viewing specific team member
+  useEffect(() => {
+    const memberId = searchParams?.get('member')
+    if (memberId && profile?.role === 'manager') {
+      // In a real app, you would fetch the member data from the API
+      // For now, using mock data
+      const mockMembers: TeamMember[] = [
+        {
+          id: '3',
+          name: 'Mike Johnson',
+          firstName: 'Mike',
+          lastName: 'Johnson',
+          email: 'mike.johnson@company.com',
+          role: 'setter',
+          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face'
+        },
+        {
+          id: '5',
+          name: 'Alex Chen',
+          firstName: 'Alex',
+          lastName: 'Chen',
+          email: 'alex.chen@company.com',
+          role: 'setter',
+          avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face'
+        }
+      ]
+      
+      const member = mockMembers.find(m => m.id === memberId)
+      setViewingMember(member || null)
+    }
+  }, [searchParams, profile])
 
   // Mock data - would come from API
   const todayMetrics = {
@@ -37,23 +88,35 @@ export default function SetterDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow">
-        <div className="px-4 sm:px-6 lg:px-8">
+    <ProtectedRoute allowedRoles={['setter', 'manager']}>
+      <DashboardSwitcher viewingMember={viewingMember}>
+        <div className="min-h-screen">
+          {/* Navigation */}
+          <Navigation />
+
+      {/* Background */}
+      <div className="absolute inset-0 top-16">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-50/50 via-white/30 to-slate-100/50 dark:from-slate-950/50 dark:via-slate-900/30 dark:to-slate-800/50" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-emerald-500/5 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-cyan-500/5 to-transparent rounded-full blur-3xl" />
+      </div>
+
+      {/* Dashboard Header */}
+      <div className="relative z-10 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50">
+        <div className="container mx-auto px-6">
           <div className="flex justify-between items-center py-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Appointment Setter Dashboard</h1>
-              <p className="text-sm text-gray-600">
+              <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Appointment Setter Dashboard</h1>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
                 Track your appointment setting performance and booking rates
               </p>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
               <input
                 type="date"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
+                className="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-sm focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
               />
             </div>
           </div>
@@ -61,7 +124,8 @@ export default function SetterDashboard() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="relative z-10 container mx-auto px-6 py-6">
+        <Breadcrumb />
         {/* Key Metrics */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
           <div className="bg-white overflow-hidden shadow rounded-lg">
@@ -357,6 +421,7 @@ export default function SetterDashboard() {
           </div>
         </div>
       </div>
-    </div>
+      </DashboardSwitcher>
+    </ProtectedRoute>
   )
 }
