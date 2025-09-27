@@ -1,3 +1,4 @@
+'use client';
 import { memo, useState, useEffect } from 'react';
 import { Grid, Card } from '@/components/ui/Optimized';
 import { cn } from '@/lib/utils';

@@ -44,28 +44,29 @@ export default function AdminUsersPage() {
 
   const fetchData = async () => {
     try {
-      // Fetch user statistics
-      const { data: statsData, error: statsError } = await supabase.rpc('get_user_stats')
-      if (statsError) {
-        console.error('Stats error:', statsError)
-        throw statsError
-      }
-      if (statsData && statsData.length > 0) {
-        setUserStats(statsData[0])
-      }
+      // TODO: Implement get_user_stats RPC function
+      // For now, set mock stats
+      setUserStats({
+        total_users: 0,
+        active_users: 0,
+        inactive_users: 0,
+        new_users_this_month: 0
+      })
 
-      // Fetch organization statistics
-      const { data: orgData, error: orgError } = await supabase.rpc('get_org_stats')
-      if (orgError) {
-        console.error('Org error:', orgError)
-        throw orgError
-      }
-      if (orgData && orgData.length > 0) {
-        setOrgStats(orgData[0])
-      }
+      // TODO: Implement get_org_stats RPC function
+      // For now, set mock org stats
+      setOrgStats({
+        total_orgs: 0,
+        active_orgs: 0,
+        inactive_orgs: 0,
+        new_orgs_this_month: 0
+      })
 
-      // Fetch all users
-      const { data: usersData, error: usersError } = await supabase.rpc('get_all_users_admin')
+      // Fetch all users from user_profiles table
+      const { data: usersData, error: usersError } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .order('created_at', { ascending: false })
       if (usersError) {
         console.error('Users error:', usersError)
         throw usersError

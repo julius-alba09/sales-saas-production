@@ -65,7 +65,7 @@ export const GET = withAuth(async (req, user, supabase) => {
 })
 
 import { profileUpdateSchema } from '@/lib/validation'
-import { withValidation, withAuth, executeQuery, successResponse, logSecurityEvent } from '@/lib/api-utils'
+import { withValidation } from '@/lib/api-utils'
 
 export const PUT = withValidation(
   profileUpdateSchema,

@@ -1,3 +1,4 @@
+'use client';
 import { memo, useState, useCallback, useEffect } from 'react';
 import { Button, Card } from '@/components/ui/Optimized';
 import { cn } from '@/lib/utils';
