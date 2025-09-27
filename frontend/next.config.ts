@@ -96,8 +96,8 @@ const nextConfig: NextConfig = {
     },
   ],
   
-  // Standalone output for optimal deployment
-  output: 'standalone',
+  // Standalone output for optimal deployment (temporarily disabled)
+  // output: 'standalone',
   
   
   // Enable React strict mode
